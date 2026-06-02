@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Honest Tech Factory — We build the boring parts.</title>
+<meta name="description" content="Software a medida para pequeños negocios. Precios fijos. Lenguaje llano. Código que te quedas."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --htf-blue:         #2a9ac2;
+    --htf-blue-deep:    #1e7a9c;
+    --htf-mustard:      #d4a03a;
+    --htf-mustard-deep: #b8852a;
+    --htf-ink:          #13181b;
+    --htf-cream:        #f5f0e6;
+    --htf-paper:        #ede6d5;
+    --htf-sand:         #f2c87a;
+    --htf-line:         rgba(19,24,27,0.12);
+    --htf-mono:         'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    --htf-serif:        'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: var(--htf-mono);
+    background: var(--htf-cream);
+    color: var(--htf-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ─────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--htf-cream);
+    border-bottom: 1px solid var(--htf-line);
+    display: flex; align-items: center;
+    padding: 0 48px; height: 56px;
+    transition: background 0.3s;
+  }
+  nav.scrolled { background: rgba(245,240,230,0.96); backdrop-filter: blur(8px); }
+
+  .nav-logo {
+    font-family: var(--htf-mono); font-size: 14px; font-weight: 600;
+    letter-spacing: -0.3px; color: var(--htf-ink); text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-logo .dot { color: var(--htf-mustard); }
+
+  .nav-links {
+    margin-left: auto; display: flex; gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--htf-ink); text-decoration: none; opacity: 0.65;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  .nav-cta {
+    margin-left: 32px;
+    background: var(--htf-ink); color: var(--htf-cream);
+    font-family: var(--htf-mono); font-size: 11px; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none;
+    padding: 8px 18px; border: none; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--htf-blue); }
+
+  .nav-mobile-toggle {
+    display: none; margin-left: auto; background: none; border: none;
+    cursor: pointer; font-family: var(--htf-mono); font-size: 12px;
+    letter-spacing: 1px; color: var(--htf-ink);
+  }
+
+  /* ── SECTION COMMONS ─────────────────────────────────── */
+  section { position: relative; }
+
+  .kicker {
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    opacity: 0.55; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .kicker::before {
+    content: ''; display: block;
+    width: 24px; height: 1px; background: currentColor; opacity: 0.5;
+  }
+
+  /* ── SCROLL REVEAL ───────────────────────────────────── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── HERO ────────────────────────────────────────────── */
+  #hero {
+    background: var(--htf-blue); color: var(--htf-cream);
+    min-height: 100vh; padding: 120px 48px 80px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .hero-availability {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--htf-sand); opacity: 0.9; margin-bottom: 32px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-availability .pulse {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--htf-mustard); animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+  }
+  .hero-headline {
+    font-family: var(--htf-serif);
+    font-size: clamp(52px, 8vw, 128px);
+    font-weight: 500; letter-spacing: -3px; line-height: 0.93;
+    text-wrap: balance; max-width: 1100px;
+    margin-bottom: 48px;
+  }
+  .hero-headline em { font-style: italic; color: var(--htf-sand); }
+
+  .hero-bottom {
+    display: flex; align-items: flex-end;
+    gap: 48px; flex-wrap: wrap;
+  }
+  .hero-body {
+    font-size: 14px; line-height: 1.6; opacity: 0.8;
+    max-width: 420px;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-shrink: 0; }
+
+  .btn-primary {
+    background: var(--htf-cream); color: var(--htf-ink);
+    font-family: var(--htf-mono); font-size: 12px; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none;
+    padding: 14px 28px; border: none; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-primary:hover { background: var(--htf-mustard); }
+
+  .btn-secondary {
+    background: transparent; color: var(--htf-cream);
+    font-family: var(--htf-mono); font-size: 12px; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none;
+    padding: 14px 28px; border: 1px solid rgba(245,240,230,0.35); cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--htf-cream); }
+
+  .hero-corner {
+    position: absolute; bottom: 40px; right: 48px;
+    font-size: 10px; letter-spacing: 2px; opacity: 0.45; text-align: right;
+    line-height: 1.8;
+  }
+
+  /* ── SERVICES ────────────────────────────────────────── */
+  #servicios {
+    background: var(--htf-cream);
+    padding: 120px 48px;
+  }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 72px; flex-wrap: wrap; gap: 24px;
+  }
+  .section-title {
+    font-family: var(--htf-serif);
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 500; letter-spacing: -2px; line-height: 1;
+  }
+  .section-note {
+    font-size: 12px; line-height: 1.6; opacity: 0.6; max-width: 320px;
+    padding-top: 8px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--htf-line);
+  }
+  .service-card {
+    padding: 40px 32px 40px 0;
+    border-right: 1px solid var(--htf-line);
+  }
+  .service-card:last-child { border-right: none; }
+  .service-card:not(:first-child) { padding-left: 32px; }
+
+  .service-num {
+    font-size: 10px; letter-spacing: 2px; color: var(--htf-mustard-deep);
+    margin-bottom: 20px; opacity: 0.9;
+  }
+  .service-name {
+    font-family: var(--htf-serif); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.5px; line-height: 1.1; margin-bottom: 16px;
+  }
+  .service-desc {
+    font-size: 12px; line-height: 1.7; opacity: 0.65;
+  }
+  .service-tag {
+    margin-top: 24px; display: inline-block;
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    background: var(--htf-paper); color: var(--htf-ink);
+    padding: 5px 10px; opacity: 0.8;
+  }
+
+  /* ── PROCESO ─────────────────────────────────────────── */
+  #proceso {
+    background: var(--htf-paper);
+    padding: 120px 48px;
+  }
+  .proceso-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 72px;
+    border-top: 1px solid var(--htf-line);
+  }
+  .proceso-step {
+    padding: 40px 32px 40px 0;
+    border-right: 1px solid var(--htf-line);
+    position: relative;
+  }
+  .proceso-step:last-child { border-right: none; }
+  .proceso-step:not(:first-child) { padding-left: 32px; }
+
+  .step-num {
+    font-size: 10px; letter-spacing: 3px; color: var(--htf-mustard-deep);
+    margin-bottom: 24px;
+  }
+  .step-title {
+    font-family: var(--htf-serif); font-size: 22px; font-weight: 500;
+    letter-spacing: -0.3px; line-height: 1.1; margin-bottom: 14px;
+  }
+  .step-body {
+    font-size: 12px; line-height: 1.7; opacity: 0.65;
+  }
+  .step-connector {
+    position: absolute; top: 40px; right: -12px;
+    font-size: 16px; opacity: 0.3; z-index: 1;
+  }
+  .proceso-step:last-child .step-connector { display: none; }
+
+  /* ── PORTFOLIO ───────────────────────────────────────── */
+  #portfolio {
+    background: var(--htf-cream); padding: 120px 48px;
+  }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px; margin-top: 72px;
+  }
+  .portfolio-card {
+    background: var(--htf-paper);
+    padding: 48px 40px;
+    display: flex; flex-direction: column;
+    min-height: 320px; cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none; color: inherit;
+  }
+  .portfolio-card:hover { background: var(--htf-ink); color: var(--htf-cream); }
+  .portfolio-card:hover .proj-tag { background: rgba(255,255,255,0.1); }
+  .portfolio-card:hover .proj-arrow { color: var(--htf-mustard); }
+
+  .proj-tag {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    background: var(--htf-cream); display: inline-block;
+    padding: 4px 10px; margin-bottom: 'auto'; opacity: 0.7;
+    align-self: flex-start;
+  }
+  .proj-name {
+    font-family: var(--htf-serif); font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 500; letter-spacing: -1px; line-height: 1; margin-top: auto;
+    margin-bottom: 16px;
+  }
+  .proj-desc {
+    font-size: 12px; line-height: 1.6; opacity: 0.65; max-width: 360px;
+    margin-bottom: 24px;
+  }
+  .proj-arrow {
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    opacity: 0.7; margin-top: auto; transition: color 0.2s;
+  }
+
+  .portfolio-cta {
+    grid-column: 1 / -1;
+    background: var(--htf-blue); color: var(--htf-cream);
+    padding: 48px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .portfolio-cta-text {
+    font-family: var(--htf-serif); font-size: clamp(22px, 3vw, 36px);
+    font-weight: 500; letter-spacing: -0.8px;
+  }
+  .portfolio-cta-text em { font-style: italic; color: var(--htf-sand); }
+
+  /* ── MARQUEE (CONFÍAN EN NOSOTROS) ───────────────────── */
+  .marquee {
+    margin-top: 64px;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--htf-line);
+    border-bottom: 1px solid var(--htf-line);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  }
+  .marquee-track {
+    display: flex; width: max-content;
+    animation: marquee 74s linear infinite;
+  }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; }
+  }
+  .marquee-item {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 44px 64px;
+    border-right: 1px solid var(--htf-line);
+    font-family: var(--htf-serif);
+    font-size: 30px; font-weight: 500; letter-spacing: -0.8px;
+    white-space: nowrap; line-height: 1;
+    color: var(--htf-ink); opacity: 0.38;
+    transition: opacity 0.3s, color 0.3s;
+  }
+  .marquee-item:hover { opacity: 1; color: var(--htf-blue-deep); }
+  @media (max-width: 900px) {
+    .marquee-item { padding: 32px 40px; font-size: 24px; }
+  }
+
+  /* ── MANIFESTO ───────────────────────────────────────── */
+  #manifesto {
+    background: var(--htf-ink); color: var(--htf-cream);
+    padding: 120px 48px;
+  }
+  .manifesto-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; margin-top: 72px;
+    border-top: 1px solid rgba(245,240,230,0.15);
+  }
+  .manifesto-principle {
+    padding: 48px 40px 48px 0;
+    border-bottom: 1px solid rgba(245,240,230,0.1);
+    border-right: 1px solid rgba(245,240,230,0.1);
+  }
+  .manifesto-principle:nth-child(even) {
+    padding-left: 40px; padding-right: 0; border-right: none;
+  }
+  .manifesto-principle:nth-child(n+3) { border-bottom: none; }
+
+  .principle-num {
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--htf-sand); margin-bottom: 20px;
+  }
+  .principle-title {
+    font-family: var(--htf-serif); font-size: 28px; font-weight: 500;
+    letter-spacing: -0.5px; margin-bottom: 16px; line-height: 1.1;
+  }
+  .principle-body {
+    font-size: 13px; line-height: 1.7; opacity: 0.6;
+  }
+
+  .manifesto-founders {
+    margin-top: 80px; padding-top: 48px;
+    border-top: 1px solid rgba(245,240,230,0.15);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 32px;
+  }
+  .founders-intro {
+    font-size: 12px; opacity: 0.5; letter-spacing: 0.5px;
+    line-height: 1.7;
+  }
+  .founders-names {
+    font-family: var(--htf-serif); font-size: 36px; font-weight: 500;
+    letter-spacing: -1px; line-height: 1;
+  }
+  .founders-names em { color: var(--htf-sand); font-style: italic; }
+
+  /* ── CONTACT ─────────────────────────────────────────── */
+  #contacto {
+    background: var(--htf-cream);
+    padding: 120px 48px;
+  }
+  .contact-inner {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 64px; flex-wrap: wrap;
+  }
+  .contact-headline {
+    font-family: var(--htf-serif);
+    font-size: clamp(40px, 6vw, 96px);
+    font-weight: 500; letter-spacing: -3px; line-height: 0.93;
+    max-width: 700px;
+  }
+  .contact-headline em { font-style: italic; color: var(--htf-mustard-deep); }
+  .contact-right {
+    flex-shrink: 0; display: flex; flex-direction: column; gap: 16px;
+    max-width: 320px;
+  }
+  .contact-note {
+    font-size: 12px; line-height: 1.7; opacity: 0.65;
+  }
+  .contact-emails {
+    font-size: 11px; opacity: 0.55; line-height: 2;
+  }
+  .contact-emails a { color: inherit; text-decoration: none; }
+  .contact-emails a:hover { color: var(--htf-mustard-deep); }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  footer {
+    background: var(--htf-ink); color: var(--htf-cream);
+    padding: 32px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    opacity: 0.9;
+  }
+  footer a { color: inherit; text-decoration: none; opacity: 0.55; transition: opacity 0.2s; }
+  footer a:hover { opacity: 1; }
+  .footer-logo { font-size: 12px; font-weight: 600; }
+  .footer-logo .dot { color: var(--htf-mustard); }
+
+  /* ── RESPONSIVE ──────────────────────────────────────── */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .nav-mobile-toggle { display: block; }
+
+    #hero { padding: 100px 24px 64px; }
+    .hero-corner { display: none; }
+
+    #servicios, #proceso, #portfolio, #manifesto, #contacto { padding: 80px 24px; }
+
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .proceso-grid { grid-template-columns: 1fr; }
+    .service-card, .proceso-step {
+      padding: 32px 0; border-right: none;
+      border-bottom: 1px solid var(--htf-line);
+    }
+    .service-card:last-child, .proceso-step:last-child { border-bottom: none; }
+    .step-connector { display: none; }
+
+    .portfolio-grid { grid-template-columns: 1fr; }
+
+    .manifesto-grid { grid-template-columns: 1fr; }
+    .manifesto-principle {
+      padding: 40px 0; border-right: none;
+      border-bottom: 1px solid rgba(245,240,230,0.1);
+    }
+    .manifesto-principle:nth-child(even) { padding-left: 0; border-right: none; }
+    .manifesto-principle:last-child { border-bottom: none; }
+    .manifesto-principle:nth-child(n+3) { border-bottom: 1px solid rgba(245,240,230,0.1); }
+    .manifesto-principle:last-child { border-bottom: none; }
+
+    .contact-inner { flex-direction: column; gap: 40px; }
+    .contact-right { max-width: 100%; }
+    footer { padding: 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
+
+    .section-header { flex-direction: column; }
+  }
+
+  /* ── MODAL CONTACTO ─────────────────────────────────── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(19,24,27,0.7); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--htf-cream); max-width: 520px; width: 100%;
+    padding: 48px 40px 40px; position: relative;
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .modal-close {
+    position: absolute; top: 16px; right: 20px;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--htf-mono); font-size: 18px; color: var(--htf-ink);
+    opacity: 0.4; transition: opacity 0.2s; line-height: 1;
+  }
+  .modal-close:hover { opacity: 1; }
+  .modal-kicker {
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    opacity: 0.45; margin-bottom: 12px;
+  }
+  .modal-title {
+    font-family: var(--htf-serif); font-size: 32px; font-weight: 500;
+    letter-spacing: -1px; line-height: 1; margin-bottom: 32px;
+  }
+  .modal-title em { font-style: italic; color: var(--htf-mustard-deep); }
+
+  .form-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .form-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.55; }
+  .form-input {
+    font-family: var(--htf-mono); font-size: 13px;
+    background: var(--htf-paper); border: 1px solid var(--htf-line);
+    color: var(--htf-ink); padding: 12px 14px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--htf-blue); }
+  textarea.form-input { resize: vertical; min-height: 100px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .form-submit {
+    width: 100%; margin-top: 8px;
+    background: var(--htf-ink); color: var(--htf-cream);
+    font-family: var(--htf-mono); font-size: 12px; letter-spacing: 1.5px;
+    text-transform: uppercase; border: none; padding: 14px 28px;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .form-submit:hover { background: var(--htf-blue); }
+  .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .form-success {
+    display: none; text-align: center; padding: 24px 0;
+  }
+  .form-success-icon {
+    font-size: 32px; margin-bottom: 16px;
+  }
+  .form-success-title {
+    font-family: var(--htf-serif); font-size: 28px; font-weight: 500;
+    letter-spacing: -0.8px; margin-bottom: 10px;
+  }
+  .form-success-body { font-size: 12px; opacity: 0.65; line-height: 1.7; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">honest tech factory<span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#portfolio">Trabajo</a></li>
+    <li><a href="#manifesto">Nosotros</a></li>
+  </ul>
+  <a href="https://wa.me/34660104026" target="_blank" rel="noopener" class="nav-cta">Hablamos →</a>
+  <button class="nav-mobile-toggle" onclick="toggleMobileMenu()">menú</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-availability reveal">
+    <span class="pulse"></span>
+    Construyendo · Madrid · 2026
+  </div>
+  <h1 class="hero-headline reveal reveal-delay-1">
+    We build the <em style="color:var(--htf-sand);">boring parts</em><br/>of your business.
+  </h1>
+  <div class="hero-bottom reveal reveal-delay-2">
+    <p class="hero-body">
+      Software a medida para negocios reales. Webs, apps, dashboards y eCommerce — pensados con criterio, construidos para funcionar.
+    </p>
+    <div class="hero-actions">
+      <a href="https://wa.me/34660104026" target="_blank" rel="noopener" class="btn-primary">Book a call →</a>
+      <a href="#portfolio" class="btn-secondary">See the work</a>
+    </div>
+  </div>
+  <div class="hero-corner">
+    Madrid · EST. 2026<br/>honestechfactory.com
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="section-header">
+    <div>
+      <div class="kicker reveal">01 · Qué hacemos</div>
+      <h2 class="section-title reveal reveal-delay-1">Las partes<br/>que nadie quiere<br/>construir.</h2>
+    </div>
+    <p class="section-note reveal reveal-delay-2">
+      No somos una agencia. Construimos productos digitales para negocios reales. Sin complejidad innecesaria.
+    </p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <h3 class="service-name">Operativa del negocio</h3>
+      <p class="service-desc">Sistemas que hacen que tu día a día funcione.<br/>Reservas, gestión interna, procesos.</p>
+      <span class="service-tag">booking · calendarios · automatización</span>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <h3 class="service-name">Visualización y control</h3>
+      <p class="service-desc">Saber qué está pasando en tu negocio, sin complicaciones. Datos claros en una pantalla que tiene sentido.</p>
+      <span class="service-tag">métricas · reportes · tiempo real</span>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <h3 class="service-name">Presencia digital</h3>
+      <p class="service-desc">Webs y eCommerce que no son solo diseño. Pensados para funcionar y crecer con tu negocio.</p>
+      <span class="service-tag">webs · shopify · performance</span>
+    </div>
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-num">04</div>
+      <h3 class="service-name">Productos digitales</h3>
+      <p class="service-desc">Cuando necesitas algo más que una web. Aplicaciones y plataformas bien pensadas desde el inicio.</p>
+      <span class="service-tag">apps · plataformas · sistemas</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <div class="section-header">
+    <div>
+      <div class="kicker reveal">02 · Cómo trabajamos</div>
+      <h2 class="section-title reveal reveal-delay-1">Primero entender. 
+Luego construir.
+</h2>
+    </div>
+    <p class="section-note reveal reveal-delay-2">
+      No empezamos por el código.<br/>Empezamos por entender qué tiene sentido construir.
+    </p>
+  </div>
+  <div class="proceso-grid">
+    <div class="proceso-step reveal">
+      <div class="step-num">01</div>
+      <h3 class="step-title">Entender el problema</h3>
+      <p class="step-body">Nos reunimos para ir al grano. Qué necesitas, qué no, y qué realmente tiene sentido construir.</p>
+      <span class="step-connector">→</span>
+    </div>
+    <div class="proceso-step reveal reveal-delay-1">
+      <div class="step-num">02</div>
+      <h3 class="step-title">Definir el alcance</h3>
+      <p class="step-body">Bajamos la idea a algo concreto. Qué construimos primero, qué dejamos fuera y por qué.</p>
+      <span class="step-connector">→</span>
+    </div>
+    <div class="proceso-step reveal reveal-delay-2">
+      <div class="step-num">03</div>
+      <h3 class="step-title">Prototipar y validar</h3>
+      <p class="step-body">Empezamos por el prototipo. Vemos cómo funciona antes de construirlo de verdad.</p>
+      <span class="step-connector">→</span>
+    </div>
+    <div class="proceso-step reveal reveal-delay-3">
+      <div class="step-num">04</div>
+      <h3 class="step-title">Construir y evolucionar</h3>
+      <p class="step-body">Construimos lo necesario y lo ponemos en marcha. A partir de ahí, iteramos y mejoramos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO / CONFÍAN EN NOSOTROS -->
+<section id="portfolio">
+  <div class="section-header">
+    <div>
+      <div class="kicker reveal">03 · Confían en nosotros</div>
+      <h2 class="section-title reveal reveal-delay-1">Negocios que ya<br/>confían en nosotros.</h2>
+    </div>
+    <p class="section-note reveal reveal-delay-2">
+      Trabajamos codo con codo con quienes nos confían su producto.<br/>Pocos proyectos, hechos bien.
+    </p>
+  </div>
+
+  <div class="marquee reveal reveal-delay-2" aria-label="Marcas que confían en nosotros">
+    <div class="marquee-track">
+      <!-- set 1 -->
+      <div class="marquee-item">Patsy Shoes</div>
+      <div class="marquee-item">F.A.R.O</div>
+      <div class="marquee-item">A.S. Inmobiliaria</div>
+      <div class="marquee-item">Twenty4 Studios</div>
+      <div class="marquee-item">Maraca Creative House</div>
+      <div class="marquee-item">OMA by Luchi</div>
+      <div class="marquee-item">KISH&amp;GO</div>
+      <div class="marquee-item">ALL IN SPORTS Group</div>
+      <div class="marquee-item">Quinteros Viajes</div>
+      <div class="marquee-item">RolandH</div>
+      <div class="marquee-item">PermitPal</div>
+      <div class="marquee-item">Refugio De Sol</div>
+      <div class="marquee-item">ETER Bar</div>
+      <div class="marquee-item">Welcome Suites</div>
+      <div class="marquee-item">UNRATED</div>
+      <!-- set 2 (duplicado para el loop) -->
+      <div class="marquee-item" aria-hidden="true">Patsy Shoes</div>
+      <div class="marquee-item" aria-hidden="true">F.A.R.O</div>
+      <div class="marquee-item" aria-hidden="true">A.S. Inmobiliaria</div>
+      <div class="marquee-item" aria-hidden="true">Twenty4 Studios</div>
+      <div class="marquee-item" aria-hidden="true">Maraca Creative House</div>
+      <div class="marquee-item" aria-hidden="true">OMA by Luchi</div>
+      <div class="marquee-item" aria-hidden="true">KISH&amp;GO</div>
+      <div class="marquee-item" aria-hidden="true">ALL IN SPORTS Group</div>
+      <div class="marquee-item" aria-hidden="true">Quinteros Viajes</div>
+      <div class="marquee-item" aria-hidden="true">RolandH</div>
+      <div class="marquee-item" aria-hidden="true">PermitPal</div>
+      <div class="marquee-item" aria-hidden="true">Refugio De Sol</div>
+      <div class="marquee-item" aria-hidden="true">ETER Bar</div>
+      <div class="marquee-item" aria-hidden="true">Welcome Suites</div>
+      <div class="marquee-item" aria-hidden="true">UNRATED</div>
+    </div>
+  </div>
+
+  <!--
+    ── GRID DE PROYECTOS RECIENTES (ocultado de momento) ──────────────
+    Para recuperarlo, descomenta este bloque y elimina la marquesina de arriba.
+
+    <div class="portfolio-grid">
+      <a href="portfolio.html" class="portfolio-card reveal">
+        <span class="proj-tag">eCommerce</span>
+        <h3 class="proj-name">Patsy Shoes</h3>
+        <p class="proj-desc">eCommerce en desarrollo. Shopify a medida, centrado en experiencia y conversión.</p>
+        <span class="proj-arrow">Ver proyecto →</span>
+      </a>
+      <a href="portfolio.html" class="portfolio-card reveal reveal-delay-1">
+        <span class="proj-tag">App PWA</span>
+        <h3 class="proj-name">F.A.R.O</h3>
+        <p class="proj-desc">App PWA para hábitos y planificación. Producto digital desde concepto hasta ejecución.</p>
+        <span class="proj-arrow">Ver proyecto →</span>
+      </a>
+      <a href="portfolio.html" class="portfolio-card reveal reveal-delay-2">
+        <span class="proj-tag">Plataforma interna</span>
+        <h3 class="proj-name">AS Inmobiliaria</h3>
+        <p class="proj-desc">Plataforma interna para gestión de cartera. Organización, control y visibilidad del negocio.</p>
+        <span class="proj-arrow">Ver proyecto →</span>
+      </a>
+      <a href="portfolio.html" class="portfolio-card reveal reveal-delay-3">
+        <span class="proj-tag">Web corporativa</span>
+        <h3 class="proj-name">Twenty4 Studios</h3>
+        <p class="proj-desc">Web corporativa y portfolio. Presencia digital clara, sin complejidad.</p>
+        <span class="proj-arrow">Ver proyecto →</span>
+      </a>
+    </div>
+  -->
+
+  <div class="portfolio-cta reveal" style="margin-top:64px;">
+    <p class="portfolio-cta-text">¿Tienes algo en mente? <em>Cuéntanoslo.</em></p>
+    <div style="display:flex;gap:12px;flex-shrink:0;align-items:center;">
+      <a href="https://wa.me/34660104026" target="_blank" rel="noopener" class="btn-primary" style="background:var(--htf-cream);color:var(--htf-ink);">Book a call →</a>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="section-header">
+    <div>
+      <div class="kicker reveal" style="opacity:0.45;color:var(--htf-cream);">04 · Nosotros</div>
+      <h2 class="section-title reveal reveal-delay-1">Lo que <em style="font-style:italic;color:var(--htf-sand);">honesto</em><br/>significa, en la práctica.</h2>
+    </div>
+    <p class="section-note reveal reveal-delay-2" style="opacity:0.5;color:var(--htf-cream);">
+      No es un valor corporativo. Es la forma en que trabajamos.
+    </p>
+  </div>
+  <div class="manifesto-grid">
+    <div class="manifesto-principle reveal">
+      <div class="principle-num">01</div>
+      <h3 class="principle-title">Lenguaje claro</h3>
+      <p class="principle-body">Sin "sinergias". Hablamos como hablan nuestros clientes.</p>
+    </div>
+    <div class="manifesto-principle reveal reveal-delay-1">
+      <div class="principle-num">02</div>
+      <h3 class="principle-title">Claridad desde el inicio</h3>
+      <p class="principle-body">Sabes qué vamos a hacer — y por qué. Sin confusión. Sin cosas innecesarias.</p>
+    </div>
+    <div class="manifesto-principle reveal reveal-delay-2">
+      <div class="principle-num">03</div>
+      <h3 class="principle-title">Trabajo visible</h3>
+      <p class="principle-body">Ves cómo se construye. Nada de cajas negras ni procesos ocultos.</p>
+    </div>
+    <div class="manifesto-principle reveal reveal-delay-3">
+      <div class="principle-num">04</div>
+      <h3 class="principle-title">Pequeños por decisión</h3>
+      <p class="principle-body">Dos personas. Pocos proyectos. Preferimos hacerlo bien que hacerlo todo.</p>
+    </div>
+  </div>
+
+  <div class="manifesto-founders reveal">
+    <p class="founders-intro">
+      Diseñamos y construimos productos digitales<br/>entre España y Argentina.
+    </p>
+    <p class="founders-names"><em>Juli</em> &amp; <em>Nico</em>.</p>
+  </div>
+
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="kicker reveal">05 · Contacto</div>
+  <div class="contact-inner">
+    <h2 class="contact-headline reveal reveal-delay-1">
+      Hablemos<br/>sin <em>compromiso.</em>
+    </h2>
+    <div class="contact-right">
+      <p class="contact-note reveal reveal-delay-2">
+        Una conversación para entender qué necesitas.<br/><br/>Sin pitch. Sin rodeos.
+      </p>
+      <div class="contact-emails reveal reveal-delay-4">
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.45;margin-bottom:10px;">Escríbenos por WhatsApp</div>
+        <a href="https://wa.me/34660104026" target="_blank">Juli → +34 660 104 026</a><br/>
+        <a href="https://wa.me/34650214602" target="_blank">Nico → +34 650 214 602</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">honest tech factory<span class="dot">.</span></span>
+  <span>Madrid · EST. 2026</span>
+  <span>WE BUILD THE BORING PARTS</span>
+  <span>
+    <a href="mailto:juli@honestechfactory.com">Contacto</a>
+    &ensp;·&ensp;
+    <a href="portfolio.html">Portfolio</a>
+  </span>
+</footer>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('#hero .reveal').forEach(el => {
+    setTimeout(() => el.classList.add('visible'), 100);
+  });
+
+  function openModal(e) {
+    if (e) e.preventDefault();
+    document.getElementById('contact-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('contact-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOnOverlay(e) {
+    if (e.target === document.getElementById('contact-modal')) closeModal();
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  function submitForm(e) {
+    e.preventDefault();
+    const btn = document.getElementById('form-btn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    setTimeout(() => {
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    }, 800);
+  }
+
+  function toggleMobileMenu() {
+    alert('Menú móvil — próximamente');
+  }
+</script>
+
+<!-- MODAL CONTACTO — DESACTIVADO DE MOMENTO. Descomenta este bloque para reactivar el formulario.
+<div class="modal-overlay" id="contact-modal" onclick="closeModalOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+    <div class="modal-kicker">Contacto</div>
+    <h2 class="modal-title">Hablemos<br/><em>sin rodeos.</em></h2>
+    <form id="contact-form" onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="f-name">Nombre</label>
+          <input class="form-input" id="f-name" type="text" placeholder="Tu nombre" required/>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="f-email">Email</label>
+          <input class="form-input" id="f-email" type="email" placeholder="tu@email.com" required/>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="f-phone">Teléfono <span style="opacity:0.5;">(opcional)</span></label>
+        <input class="form-input" id="f-phone" type="tel" placeholder="+34 600 000 000"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="f-message">Cuéntanos</label>
+        <textarea class="form-input" id="f-message" placeholder="¿Qué necesitas construir? Cuanto más detalle, mejor." required></textarea>
+      </div>
+      <button class="form-submit" type="submit" id="form-btn">Enviar →</button>
+    </form>
+    <div class="form-success" id="form-success">
+      <div class="form-success-icon">✦</div>
+      <div class="form-success-title">Recibido.</div>
+      <p class="form-success-body">Gracias por escribirnos. Te respondemos en menos de 24h.</p>
+    </div>
+  </div>
+</div>
+-->
+
+</body>
+</html>

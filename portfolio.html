@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Portfolio — Honest Tech Factory</title>
+<meta name="description" content="Proyectos de software a medida para pequeños negocios. Honest Tech Factory, Madrid."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --htf-blue:         #2a9ac2;
+    --htf-blue-deep:    #1e7a9c;
+    --htf-mustard:      #d4a03a;
+    --htf-mustard-deep: #b8852a;
+    --htf-ink:          #13181b;
+    --htf-cream:        #f5f0e6;
+    --htf-paper:        #ede6d5;
+    --htf-sand:         #f2c87a;
+    --htf-line:         rgba(19,24,27,0.12);
+    --htf-mono:         'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    --htf-serif:        'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--htf-mono);
+    background: var(--htf-cream);
+    color: var(--htf-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(245,240,230,0.96); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--htf-line);
+    display: flex; align-items: center;
+    padding: 0 48px; height: 56px;
+  }
+  .nav-logo { font-size: 14px; font-weight: 600; letter-spacing: -0.3px; color: var(--htf-ink); text-decoration: none; }
+  .nav-logo .dot { color: var(--htf-mustard); }
+  .nav-links { margin-left: auto; display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--htf-ink); text-decoration: none; opacity: 0.65; transition: opacity 0.2s; }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    margin-left: 32px; background: var(--htf-ink); color: var(--htf-cream);
+    font-family: var(--htf-mono); font-size: 11px; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none; padding: 8px 18px;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--htf-blue); }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* HEADER */
+  .page-header {
+    padding: 140px 48px 80px;
+    background: var(--htf-ink); color: var(--htf-cream);
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 40px; flex-wrap: wrap;
+  }
+  .page-header-title {
+    font-family: var(--htf-serif);
+    font-size: clamp(56px, 8vw, 120px);
+    font-weight: 500; letter-spacing: -3px; line-height: 0.93;
+  }
+  .page-header-title em { font-style: italic; color: var(--htf-sand); }
+  .page-header-meta {
+    font-size: 11px; letter-spacing: 1.5px; opacity: 0.45;
+    line-height: 2; text-align: right;
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    background: var(--htf-paper);
+    border-bottom: 1px solid var(--htf-line);
+    padding: 0 48px;
+    display: flex; gap: 0; overflow-x: auto;
+  }
+  .filter-btn {
+    font-family: var(--htf-mono); font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; background: none; border: none;
+    color: var(--htf-ink); padding: 18px 24px; cursor: pointer;
+    opacity: 0.5; border-bottom: 2px solid transparent;
+    transition: opacity 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { opacity: 0.85; }
+  .filter-btn.active { opacity: 1; border-bottom-color: var(--htf-mustard); }
+
+  /* PROJECT LIST */
+  .project-list { padding: 0 48px 120px; }
+
+  .project-item {
+    display: grid; grid-template-columns: 80px 1fr 1fr auto;
+    align-items: start; gap: 48px;
+    padding: 56px 0;
+    border-bottom: 1px solid var(--htf-line);
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none; color: inherit;
+  }
+  .project-item:hover { background: none; }
+  .project-item:hover .proj-arrow-right { transform: translateX(6px); color: var(--htf-mustard-deep); }
+  .project-item:hover .proj-headline { color: var(--htf-blue); }
+
+  .proj-index { font-size: 11px; letter-spacing: 2px; opacity: 0.4; padding-top: 6px; }
+  .proj-headline {
+    font-family: var(--htf-serif); font-size: clamp(28px, 3vw, 44px);
+    font-weight: 500; letter-spacing: -1px; line-height: 1;
+    transition: color 0.2s;
+  }
+  .proj-meta { display: flex; flex-direction: column; gap: 12px; padding-top: 6px; }
+  .proj-type {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    background: var(--htf-paper); padding: 5px 10px;
+    display: inline-block; opacity: 0.8;
+  }
+  .proj-excerpt { font-size: 12px; line-height: 1.7; opacity: 0.65; max-width: 360px; }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .proj-tag-pill {
+    font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+    border: 1px solid var(--htf-line); padding: 3px 8px; opacity: 0.6;
+  }
+
+  .proj-arrow-right {
+    font-size: 18px; opacity: 0.4; padding-top: 8px; flex-shrink: 0;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  /* EMPTY STATE */
+  .empty-slot {
+    padding: 56px 0; border-bottom: 1px solid var(--htf-line);
+    display: flex; align-items: center; gap: 48px; opacity: 0.35;
+  }
+  .empty-slot-label {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    border: 1px dashed var(--htf-line); padding: 10px 16px;
+  }
+  .empty-slot-text { font-size: 12px; font-style: italic; opacity: 0.7; }
+
+  /* CTA STRIP */
+  .cta-strip {
+    background: var(--htf-blue); color: var(--htf-cream);
+    padding: 80px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; flex-wrap: wrap;
+  }
+  .cta-strip-title {
+    font-family: var(--htf-serif);
+    font-size: clamp(32px, 4vw, 60px);
+    font-weight: 500; letter-spacing: -1.5px; line-height: 1;
+  }
+  .cta-strip-title em { font-style: italic; color: var(--htf-sand); }
+  .btn-primary {
+    background: var(--htf-cream); color: var(--htf-ink);
+    font-family: var(--htf-mono); font-size: 12px; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none;
+    padding: 14px 28px; border: none; cursor: pointer;
+    transition: background 0.2s; white-space: nowrap; flex-shrink: 0;
+  }
+  .btn-primary:hover { background: var(--htf-mustard); }
+
+  /* FOOTER */
+  footer {
+    background: var(--htf-ink); color: var(--htf-cream);
+    padding: 32px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  footer a { color: inherit; text-decoration: none; opacity: 0.55; transition: opacity 0.2s; }
+  footer a:hover { opacity: 1; }
+  .footer-logo { font-size: 12px; font-weight: 600; }
+  .footer-logo .dot { color: var(--htf-mustard); }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .page-header { padding: 100px 24px 48px; }
+    .page-header-meta { display: none; }
+    .filter-bar { padding: 0 24px; }
+    .project-list { padding: 0 24px 80px; }
+    .project-item { grid-template-columns: 40px 1fr; gap: 16px; }
+    .proj-meta, .proj-arrow-right { display: none; }
+    .cta-strip { padding: 60px 24px; flex-direction: column; }
+    footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">honest tech factory<span class="dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#servicios">Servicios</a></li>
+    <li><a href="index.html#proceso">Proceso</a></li>
+    <li><a href="portfolio.html" style="opacity:1;">Portfolio</a></li>
+    <li><a href="index.html#manifesto">Nosotros</a></li>
+  </ul>
+  <a href="https://calendly.com" target="_blank" class="nav-cta">Hablamos →</a>
+</nav>
+
+<div class="page-header">
+  <h1 class="page-header-title reveal">
+    Trabajo<br/><em>reciente.</em>
+  </h1>
+  <div class="page-header-meta reveal reveal-delay-1">
+    MADRID · 2026<br/>
+    2 PROYECTOS COMPLETADOS<br/>
+    — MÁS EN CAMINO
+  </div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterProjects('all', this)">Todos</button>
+  <button class="filter-btn" onclick="filterProjects('booking', this)">Reservas</button>
+  <button class="filter-btn" onclick="filterProjects('dashboard', this)">Dashboards</button>
+  <button class="filter-btn" onclick="filterProjects('tool', this)">Herramientas</button>
+</div>
+
+<div class="project-list" id="project-list">
+
+  <a href="#" class="project-item reveal" data-category="booking">
+    <span class="proj-index">01</span>
+    <h2 class="proj-headline">Clínica Dental Norte</h2>
+    <div class="proj-meta">
+      <span class="proj-type">Sistema de reservas</span>
+      <p class="proj-excerpt">
+        Gestión de citas para 3 especialistas. Sustituyó un sistema de WhatsApp + hojas de cálculo que costaba 2h diarias de trabajo manual.
+      </p>
+      <div class="proj-tags">
+        <span class="proj-tag-pill">booking</span>
+        <span class="proj-tag-pill">notificaciones SMS</span>
+        <span class="proj-tag-pill">panel de gestión</span>
+      </div>
+    </div>
+    <span class="proj-arrow-right">→</span>
+  </a>
+
+  <a href="#" class="project-item reveal reveal-delay-1" data-category="dashboard">
+    <span class="proj-index">02</span>
+    <h2 class="proj-headline">Galería Marzipán</h2>
+    <div class="proj-meta">
+      <span class="proj-type">Dashboard interno</span>
+      <p class="proj-excerpt">
+        Panel unificado de ventas, inventario de obras y agenda de exposiciones. Una pantalla para entender el negocio sin exportar Excel.
+      </p>
+      <div class="proj-tags">
+        <span class="proj-tag-pill">métricas</span>
+        <span class="proj-tag-pill">inventario</span>
+        <span class="proj-tag-pill">tiempo real</span>
+      </div>
+    </div>
+    <span class="proj-arrow-right">→</span>
+  </a>
+
+  <!-- Placeholders — se añaden proyectos cuando estén listos -->
+  <div class="empty-slot reveal reveal-delay-2">
+    <span class="empty-slot-label">03 · próximamente</span>
+    <span class="empty-slot-text">Proyecto en curso — disponible en Q3 2026</span>
+  </div>
+
+  <div class="empty-slot reveal reveal-delay-3">
+    <span class="empty-slot-label">04 · próximamente</span>
+    <span class="empty-slot-text">¿Tu proyecto aquí? Hablamos.</span>
+  </div>
+
+</div>
+
+<div class="cta-strip">
+  <h2 class="cta-strip-title reveal">¿Tienes algo<br/>que <em>construir?</em></h2>
+  <a href="https://calendly.com" target="_blank" class="btn-primary reveal reveal-delay-1">Reservar llamada →</a>
+</div>
+
+<footer>
+  <span class="footer-logo">honest tech factory<span class="dot">.</span></span>
+  <span>Madrid · EST. 2026</span>
+  <span>WE BUILD THE BORING PARTS</span>
+  <span>
+    <a href="mailto:juli@honestechfactory.com">Contacto</a>
+    &ensp;·&ensp;
+    <a href="index.html">Inicio</a>
+  </span>
+</footer>
+
+<script>
+  // Reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+  document.querySelectorAll('.page-header .reveal').forEach(el => {
+    setTimeout(() => el.classList.add('visible'), 100);
+  });
+
+  // Filter
+  function filterProjects(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.project-item[data-category]').forEach(item => {
+      item.style.display = (cat === 'all' || item.dataset.category === cat) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
