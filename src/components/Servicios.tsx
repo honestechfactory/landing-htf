@@ -4,13 +4,13 @@ const services = [
   {
     num: '01',
     name: 'Operativa del negocio',
-    desc: 'Sistemas que hacen que tu día a día funcione.',
+    desc: 'Sistemas que hacen que tu día a día funcione. Gestión interna y procesos.',
     tag: 'booking · calendarios · automatización',
   },
   {
     num: '02',
     name: 'Visualización y control',
-    desc: 'Saber qué está pasando en tu negocio.',
+    desc: 'Saber qué está pasando en tu negocio, sin complicaciones.',
     tag: 'métricas · reportes · tiempo real',
   },
   {
