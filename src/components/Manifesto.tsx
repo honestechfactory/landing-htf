@@ -58,7 +58,7 @@ export default function Manifesto() {
       <ScrollReveal>
         <div className="manifesto-founders">
           <p className="founders-intro">
-            Diseñamos y construimos productos digitales
+            Diseñamos, construimos y gestionamos productos digitales
             <br />
             entre España y Argentina.
           </p>
