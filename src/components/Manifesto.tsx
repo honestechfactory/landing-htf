@@ -62,9 +62,24 @@ export default function Manifesto() {
             <br />
             entre España y Argentina.
           </p>
-          <p className="founders-names">
-            <em>Juli</em> &amp; <em>Nico</em>.
-          </p>
+          <div className="founders-cards">
+            <div className="founder-card">
+              <p className="founders-names"><em>Juli</em>.</p>
+              <ul className="founder-roles">
+                <li>Frontend developer</li>
+                <li>Project Manager IT</li>
+                <li>Web designer</li>
+              </ul>
+            </div>
+            <div className="founder-card">
+              <p className="founders-names"><em>Nico</em>.</p>
+              <ul className="founder-roles">
+                <li>Backend developer</li>
+                <li>Data & analytics</li>
+                <li>DevOps & Infrastructure</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </ScrollReveal>
     </section>
