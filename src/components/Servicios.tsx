@@ -25,6 +25,12 @@ const services = [
     desc: 'Cuando necesitas algo más que una web. Aplicaciones y plataformas a medida.',
     tag: 'apps · plataformas · sistemas',
   },
+  {
+    num: '05',
+    name: 'Gestión de proyectos',
+    desc: 'Coordinamos equipos y prioridades para que tu proyecto llegue a donde tiene que llegar.',
+    tag: 'project management · roadmap · equipos',
+  },
 ]
 
 export default function Servicios() {
@@ -45,7 +51,7 @@ export default function Servicios() {
         </div>
         <ScrollReveal delay={0.2}>
           <p className="section-note">
-            No somos una agencia. Construimos productos digitales para negocios reales.
+            No somos una agencia. Construimos y gestionamos productos digitales para negocios reales.
             Sin complejidad innecesaria.
           </p>
         </ScrollReveal>

@@ -318,7 +318,7 @@ section {
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   border-top: 1px solid var(--htf-line);
 }
 
@@ -816,9 +816,10 @@ footer a:hover {
     padding-left: 0;
   }
 
-  /* Last row in 2-column grid: remove border from both cells */
-  .service-card:nth-last-child(-n+2) {
+  /* 5th card alone in last row: full width, no border */
+  .service-card:last-child {
     border-bottom: none;
+    grid-column: span 2;
   }
 
   .proceso-step:last-child {
