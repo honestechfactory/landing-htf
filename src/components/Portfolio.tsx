@@ -35,8 +35,6 @@ export default function Portfolio() {
         <ScrollReveal delay={0.2}>
           <p className="section-note">
             Trabajamos codo con codo con quienes nos confían su producto.
-            <br />
-            Pocos proyectos, hechos bien.
           </p>
         </ScrollReveal>
       </div>
